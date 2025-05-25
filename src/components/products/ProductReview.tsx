@@ -97,7 +97,7 @@ const ProductReview = ({ review, id, order = 'recent' }: reviewProps) => {
       <div className="md:flex md:justify-between">
         <div className="md:mr-[30px] lg:mr-[80px]">
           <div className="flex items-center gap-[10px] mb-4">
-            <div className="w-[36px] h-[36px]">
+            <div className="w-[36px] h-[36px] flex-shrink-0">
               {review.user.image ? (
                 <Image
                   src={review.user.image}
