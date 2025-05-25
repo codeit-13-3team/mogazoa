@@ -8,6 +8,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useModal } from '@/context/ModalContext';
 import EditProductReview from '../EditProductReviewModal';
+import ReviewDeleteConfirm from './ReviewDeleteConfirm';
 
 interface reviewProps {
   review: ReviewListItem;
@@ -87,6 +88,10 @@ const ProductReview = ({ review, id, order = 'recent' }: reviewProps) => {
     );
   };
 
+  const openDeleteModal = () => {
+    openModal(<ReviewDeleteConfirm productId={id} reviewId={review?.id} />);
+  };
+
   return (
     <article key={review.id}>
       <div className="md:flex md:justify-between">
@@ -151,7 +156,10 @@ const ProductReview = ({ review, id, order = 'recent' }: reviewProps) => {
                   >
                     수정
                   </span>
-                  <span className="text-[12px] lg:text-[14px] font-light text-gray-100 underline cursor-pointer">
+                  <span
+                    className="text-[12px] lg:text-[14px] font-light text-gray-100 underline cursor-pointer"
+                    onClick={openDeleteModal}
+                  >
                     삭제
                   </span>
                 </>

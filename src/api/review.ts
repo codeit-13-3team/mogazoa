@@ -11,6 +11,15 @@ export const createReview = async (body: CreateReviewRequest) => {
   }
 };
 
+export const deleteReview = async (reviewId: number) => {
+  try {
+    await axiosInstance.delete(`/reviews/${reviewId}`);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 export const updateReview = async (reviewId: number, body: UpdateReviewRequest) => {
   try {
     const response = await axiosInstance.patch<ReviewResponse>(`/reviews/${reviewId}`, body);

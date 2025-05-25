@@ -32,9 +32,9 @@ function Modal({ children, buttonText, buttonProps }: Props) {
   return createPortal(
     <>
       <div className="fixed inset-0 bg-[#000000]/70 z-40" />
-      <div className="flex justify-center items-center fixed inset-0 z-50">
+      <div className="flex justify-center items-center px-5 fixed inset-0 z-50">
         <div
-          className={`relative flex flex-col bg-black-500 w-[335px] h-auto rounded-xl  md:rounded-2xl  ${isSmall ? 'md:w-[500px]' : 'md:w-[590px] lg:w-[620px]'}`}
+          className={`relative flex flex-col bg-black-500 w-[335px] h-auto rounded-xl md:rounded-2xl ${isSmall ? 'md:w-[500px]' : 'md:w-[590px] lg:w-[620px]'}`}
         >
           <button
             onClick={closeModal}

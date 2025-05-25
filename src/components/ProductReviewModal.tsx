@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { getProductById } from '@/api/products';
 import { createReview } from '@/api/review';
 import Modal from './Modal';
@@ -18,6 +18,8 @@ function ProductReview({ productId }: productDetailProps) {
   const [reviewText, setReviewText] = useState('');
   const { closeModal } = useModal();
 
+  const queryClient = useQueryClient();
+
   const { mutate: submitReview, isPending } = useMutation({
     mutationFn: createReview,
     onSuccess: () => {
@@ -25,6 +27,9 @@ function ProductReview({ productId }: productDetailProps) {
       setReviewText('');
       setRating(0);
       setProductImages([]);
+      queryClient.invalidateQueries({
+        queryKey: ['reviews', productId],
+      });
       closeModal();
     },
     onError: (error) => {

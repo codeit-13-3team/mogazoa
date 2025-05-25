@@ -1,7 +1,7 @@
 import { DropDown, DropDownOption } from '@/components/DropDown';
 import Textarea from '@/components/Textarea';
 import { useEffect, useRef, useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useDebounce } from '@/hooks/useDebounce';
 import { createProduct, getProductList, updateProduct } from '@/api/products';
 import { getCategoryList } from '@/api/category';
@@ -17,6 +17,7 @@ interface ProductProps {
 }
 
 const ProductForm = ({ selectedProduct }: ProductProps) => {
+  const queryClient = useQueryClient();
   const [productName, setProductName] = useState<string>('');
   const [productDescript, setProductDescript] = useState<string>('');
   const [productCategory, setProductCategory] = useState<string | number>(0);
@@ -58,6 +59,22 @@ const ProductForm = ({ selectedProduct }: ProductProps) => {
     queryFn: getCategoryList,
     staleTime: Infinity,
     gcTime: Infinity,
+  });
+
+  const createM = useMutation({
+    mutationFn: async (body: CreateProductRequest) => createProduct(body),
+    onSuccess: (newProd) => {
+      closeModal();
+      router.push(`/products/${newProd.id}`);
+    },
+  });
+
+  const updateM = useMutation({
+    mutationFn: async (body: CreateProductRequest) => updateProduct(selectedProduct!.id, body),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['product', selectedProduct!.id] });
+      closeModal();
+    },
   });
 
   useEffect(() => {
@@ -108,28 +125,18 @@ const ProductForm = ({ selectedProduct }: ProductProps) => {
     productImage !== '' &&
     !isDuplicate;
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     const body: CreateProductRequest = {
-      categoryId: productCategory,
-      image: productImage,
-      description: productDescript,
       name: productName,
+      description: productDescript,
+      categoryId: Number(productCategory),
+      image: productImage,
     };
 
-    try {
-      if (selectedProduct) {
-        await updateProduct(selectedProduct.id, body);
-        alert('상품이 수정되었습니다.');
-        closeModal();
-      } else {
-        const newProduct = await createProduct(body);
-        alert('상품이 추가되었습니다.');
-        closeModal();
-        router.push(`/products/${newProduct.id}`);
-      }
-    } catch (err) {
-      console.error(err);
-      alert('요청 중 오류가 발생했습니다.');
+    if (selectedProduct) {
+      updateM.mutate(body);
+    } else {
+      createM.mutate(body);
     }
   };
 

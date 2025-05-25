@@ -192,12 +192,6 @@ function ImageUploader({
     }
   };
 
-  useEffect(() => {
-    if (errorMessage) {
-      alert(errorMessage);
-    }
-  }, [errorMessage]);
-
   if (isSingleImage) {
     return (
       <div className="relative rounded-[8px] border border-black-300 bg-black-400 w-[140px] h-[140px] md:w-[135px] md:h-[135px] lg:w-[160px] lg:h-[160px]">

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useModal } from '@/context/ModalContext';
 import { getProductById } from '@/api/products';
 import { updateReview } from '@/api/review';
@@ -30,11 +30,16 @@ function EditProductReview({
 
   const { closeModal } = useModal();
 
+  const queryClient = useQueryClient();
+
   const { mutate: submitReview, isPending } = useMutation({
     mutationFn: (props: { articleId: number; body: UpdateReviewRequest }) =>
       updateReview(props.articleId, props.body),
     onSuccess: () => {
       alert('리뷰 수정 성공!');
+      queryClient.invalidateQueries({
+        queryKey: ['reviews', productId],
+      });
       closeModal();
     },
     onError: (error) => {

@@ -32,7 +32,7 @@ export default function ProductReviews({ id, order = 'recent' }: ProductReviewsP
 
   if (!reviews || reviews.length === 0) {
     return (
-      <section className="w-[940px] mx-auto">
+      <section className="max-w-[940px] mx-auto">
         <div className="bg-black-400 rounded-xl p-8">
           <div className="text-gray-400 text-center py-8">리뷰가 없습니다</div>
         </div>

@@ -48,7 +48,7 @@ const Product = ({ product }: ProductProps) => {
                 height={12}
                 className="w-[15px] h-[15px]"
               />
-              <p>{product.rating}</p>
+              <p>{product.rating.toFixed(1)}</p>
             </div>
           </div>
         </div>
