@@ -18,7 +18,7 @@
 ---
 ## 🧭 배포 주소
 
-👉 [https://mogazoa.vercel.app](https://mogazoa.vercel.app/)
+👉 [https://mogazoa12.vercel.app](https://mogazoa12.vercel.app/)
 
 
 
