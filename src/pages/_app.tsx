@@ -8,6 +8,7 @@ import '@/styles/globals.css';
 import type { AppProps } from 'next/app';
 import NavBar from '@/components/NavBar';
 import useAuthStore from '@/stores/authStores';
+import Head from 'next/head';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -48,19 +49,27 @@ export default function App({ Component, pageProps }: AppProps) {
     pageProps?.statusCode === 404;
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ModalProvider>
-        {!is404Page && <NavBar showSearch={pageProps.showSearch} />}
-        
-        <main className="font-sans bg-black-500">
-          <Component {...pageProps} />
-        </main>
+    <>
+      <Head>
+        <title>모가조아</title>
+        <meta name="description" content="페이지 설명" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+      </Head>
+      <QueryClientProvider client={queryClient}>
+        <ModalProvider>
+          {!is404Page && <NavBar showSearch={pageProps.showSearch} />}
 
-        {!is404Page && isLoggedIn && <FloatingAddButton />}
-        <ModalRoot />
-      </ModalProvider>
+          <main className="font-sans bg-black-500">
+            <Component {...pageProps} />
+          </main>
 
-      <ReactQueryDevtools initialIsOpen={false} />
-    </QueryClientProvider>
+          {!is404Page && isLoggedIn && <FloatingAddButton />}
+          <ModalRoot />
+        </ModalProvider>
+
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </>
   );
 }
